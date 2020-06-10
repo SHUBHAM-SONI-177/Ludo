@@ -1,0 +1,5 @@
+{% autoescape off %}
+Hi {{request.session.loguser }},
+ 		Click on the link to change  your password,
+http://{{ domain }}{% url 'changePassword' uidb64=uid token=token %}
+{% endautoescape %}

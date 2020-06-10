@@ -1,0 +1,124 @@
+{%extends 'users/links.html' %}
+{% block  title %} Login {% endblock %}
+
+{% block  body %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-2 col-md-2 col-xs-12"></div>
+    <div class="col-sm-8 col-md-8 col-xs-12 rounded" style="margin-bottom: 5%;">
+      <div style="margin-top: 10%; text-align: center;">
+        <img width="20%" src="https://softwaresuggest.imgix.net/software_logo/1495539705_followclass-192_mid.png" alt="">
+      </div>
+      <div class="red" style="text-align: center;"> 
+          <p>LOGIN</p>
+      </div>
+      <form class="myform shadow-lg" id='temp' action="handlelogin" method="POST" style="border-radius: 30px;margin-top: 2%;">
+        {% csrf_token %}
+        <br><br><br><br>
+        <div class= "box">
+          <label class="mytext" for="email"><b>Email:&emsp;&ensp;&nbsp;&nbsp;&emsp;</b></label>
+          <input style="background: none;border-bottom: black;" class="mybut" type="email" placeholder="Enter Email" name="email" required>
+        </div>
+        <br><br>
+        <div class="box">
+          <label class="mytext" for="password"><b>Password:&emsp;</b></label>
+          <input style="background: none;border-bottom: black;" type="password" placeholder="Enter Password" name="password" required>
+        </div>
+        <br><br><br>
+        <div class="pt=3"><button type="submit" class="btn btn-block btn-outline-primary" style="border-radius: 10px;">Submit</button></div><br><br>
+        <div class="mylink" style="text-align: center;"><p><span class="psw">Forgot <a style="color: green;" href="forgetpassword">PASSWORD?</a></span> &emsp; New User?  <a  style="color: red;" href="signup">SIGN UP</a></p></div>
+      </form>
+    </div>
+    <div class="col-sm-2 col-md-2 col-xs-12"></div>
+  </div>
+</div>
+<style>
+  @media screen and (max-width: 450px)
+  {
+    .red p
+    {
+      background-color: blanchedalmond;
+      width: 100%;
+      font-size: xx-large;
+      border-radius: 30px;
+    }
+    form.myform
+    {
+        margin-bottom: 25%;
+    }
+    .mylink p
+    {
+      font-size: 10px;
+    }
+  }
+  body
+  {
+    background-image: repeating-linear-gradient(45deg,grey,white);
+    background-size: cover;
+    height: 100%;
+  }
+  html,body
+  {
+    height: 100%;
+  }
+  form.myform
+  {
+    margin-top: 200px;
+    padding-left: 25px;
+    padding-top: 10px;
+    padding-right: 25px;
+    padding-bottom: 25px;
+  }
+  .box input
+  {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    font-style: oblique;
+    color: black;
+  }
+  .box
+  {
+    border-bottom: 2px solid black;
+  }
+  ::placeholder
+  {
+    color: white;
+    text-align: center;
+  }
+  @media (min-width: 768px) 
+  { 
+    .red p
+    {
+      background-color: blanchedalmond;
+      width: 40%;
+      margin-left: 30%;
+      font-size: xx-large;
+      border-radius: 30px;
+    }
+  }
+  @media (min-width: 992px) 
+  { 
+    .red p
+    {
+      background-color: blanchedalmond;
+      width: 40%;
+      margin-left: 30%;
+      font-size: xx-large;
+      border-radius: 30px;
+    }
+  }
+  @media (min-width: 1200px) 
+  { 
+    .red p
+    {
+      background-color: blanchedalmond;
+      width: 40%;
+      margin-left: 30%;
+      font-size: xx-large;
+      border-radius: 30px;
+    }
+  }
+</style>
+{% endblock %}

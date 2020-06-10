@@ -1,0 +1,98 @@
+{% extends 'users/basic.html' %}
+{% block title %} Profile {% endblock%}
+
+{%block body %}
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Update ProfilePic</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="myform" action="updateProfile" method="POST" class="shadow-lg"  enctype="multipart/form-data" style="padding: 50px;background-color: tan;">
+          {% csrf_token %}
+          <label style="color: red;font-weight: 100;" for="profilePic">Choose a profile picture:</label><br><br>
+          <input type="file" id="avatar" name="profilePic" accept="image/png,image/jpeg">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="document.getElementById('myform').submit()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row" id="mainrow">
+    <div class="col-sm-2 col-md-2 col-xs-12"></div>
+    <div class="col-sm-12 col-md-8 col-xl-8 col-lg-8 col-xs-12 shadow-lg" id="mainbox">
+      <div class="row"></div>
+      <div class="row">
+        <div class="col-md-5 col-sm-12">
+          <img src="{{ profile.profilePic.url }}" width="200" height="200" onerror="this.src='https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png';"><br>
+          <br><br>
+        </div>
+        <div class="col-md-7 col-sm-12" style="float: right;margin-top: 20px;">
+          Name: <b id="username">{{profile.name}} </b><i style="cursor: pointer;" id="editable" title="Edit" class="fa fa-pencil fa-1x"></i>
+          <form action="updateName" method="POST" id="nameform">
+            {% csrf_token %}
+            <input placeholder="First Name" type="text" name="firstname" id="inputgroupname" style="display:none;">
+            <input placeholder="Last Name" name="lastname" type="text" id="inputgroupname1" style="display: none;">
+            <i id="inputgroupname2" style="display: none;cursor: pointer;" onclick="document.getElementById('nameform').submit()" class="fa fa-check-square-o fa-2x"></i>
+          </form>
+          <br>
+          <p style="font-size: large;">Email: <b>{{profile.email}} </b></p>
+          <button class="btn-outline-success" type="button">Select players</button>
+        </div>
+      </div>
+      <div class="row" style="border: 2px solid grey; padding: 10px;">
+        <div class="col-4" style="float: left;">
+          <a href="" onclick="history.back()"><i class="fa fa-arrow-left fa-2x"></i></a>
+        </div>
+        <div class="col-4" style="text-align: center;">
+            <a title="Edit Profile" href="" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-pencil-square fa-2x"></i></a>
+        </div>
+        <div class="col-4" style="float: right;">
+          <a style="float: right;" class="mytext" href="mylogout"  title="Logout"><i class="fa fa-sign-out fa-2x"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2 col-md-2 col-xs-12"></div>
+  </div>
+</div>
+<style>
+  body{
+    background-image: linear-gradient(-45deg, black,white);
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+  }
+  html{
+    height: 100%;
+  }
+  #mainbox{
+    padding: 100px;
+    margin: 100px auto;
+    border: 2px gray;
+    border-top: 50px solid black;
+  }
+</style>
+<script>
+  $('#editable').on('click',function()
+  {
+    var groupname = $("#username").html();
+    var namee = groupname.split(' ');
+    $("#username").css({'display':"none"});
+    $("#inputgroupname").css({'display':'block'});
+    $("#inputgroupname1").css({'display':'block'});
+    $("#inputgroupname2").css({'display':'block'});
+    $("#inputgroupname").val(namee[0]);
+    $("#inputgroupname1").val(namee[1]);
+  });
+</script>
+
+{% endblock%}

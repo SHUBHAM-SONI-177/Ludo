@@ -1,0 +1,438 @@
+{% extends 'users/basic.html' %}
+{% block title %} Detailsofplayers {% endblock%}
+
+{% block body %}
+<div class="container  active-animatioon" style="margin: 20px auto;border-radius: 10px;">
+    <br>
+    <div class="background-img">
+        <div class="box">
+            <span class="myborder"></span>
+            <span class="myborder"></span>
+            <span class="myborder"></span>
+            <span class="myborder"></span>
+            <div class="content">
+                <form action="play" method="POST" id="regForm" class="shadow-lg">
+                    {% csrf_token %}
+                    <div class="tab">
+                        <label for="game">Which game</label>
+                        <select name="game" style="width: 20%;">
+                            <option value="ludo">Ludo</option>
+                            <option value="sudoku">Sudoku</option>
+                        </select>
+                    </div>
+                    <div class="tab">
+                        <h1 class="myhead">No. of players</h1>
+                        <br>
+                        <label for="nplayer" class="mylabel">How many players</label>
+                        <br>
+                        <select name="nplayer" id="myselect1" style="width: 20%;">
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                        <p id=pass_hintt></p>
+                    </div>
+                    <div class="tab">
+                        <label for="player1">Player1 </label>
+                        <select name="player1" style="width: 20%;">
+                            <option value="none" selected disabled hidden> 
+                                None 
+                            </option>
+                            <option value="green">Green</option>
+                            <option value="blue">Blue</option>
+                            <option value="yellow">Yellow</option>
+                            <option value="red">Red</option>
+                        </select>
+                        <br>
+                        <br>
+                        <label for="player2">Player2 </label>
+                        <select name="player2" style="width: 20%;">
+                            <option value="none" selected disabled hidden> 
+                                None 
+                            </option>
+                            <option value="blue">Blue</option>
+                            <option value="yellow">Yellow</option>
+                            <option value="red">Red</option>
+                            <option value="green">Green</option>
+                        </select>
+                        <br>
+                        <br>
+                        <label for="player3">Player3 </label>
+                        <select name="player3" style="width: 20%;">
+                            <option value="none" selected disabled hidden> 
+                                None 
+                            </option> 
+                            <option value="yellow">Yellow</option>
+                            <option value="red">Red</option>
+                            <option value="green">Green</option>
+                            <option value="blue">Blue</option>
+                        </select>
+                        <br>
+                        <br>
+                        <label for="player4">Player4 </label>
+                        <select name="player4" style="width: 20%;">
+                            <option value="none" selected disabled hidden> 
+                                None 
+                            </option> 
+                            <option value="red">Red</option>
+                            <option value="green">Green</option>
+                            <option value="blue">Blue</option>
+                            <option value="yellow">Yellow</option>
+                        </select>
+                    </div>
+                    <div style="overflow:auto;">
+                        <div style="float:left;">
+                            <button style="width: 100%;background: none;border: none;" type="button" id="prevBtn" onclick="nextPrev(-1)"><p><i class="fa fa-chevron-left"></i></p></button>
+                        </div>
+                        <div style="float:right;">
+                            <button  style="width: 100%;background: none;border: none;" type="button" id="nextBtn" onclick="nextPrev(1)"><p><i class="fa fa-chevron-right"></i></p></button>
+                        </div>
+                        <div style="float: right;">
+                            <button id="mysubmit" style="display: none;background: none;border: none;" onclick="nextPrev(1)" type="button"><p><i class="fa fa-check"></i></p></button>
+                        </div>
+                    </div>
+                    <div style="text-align:center;margin-top:40px;">
+                        <span class="step"></span>
+                        <span class="step"></span>
+                        <span class="step"></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+<script>
+    $(window).on('back',function(){
+        window.location.href = "/users";
+    });
+    var nplayers = 0;
+    var currentTab = 0; 
+    showTab(currentTab);
+    function showTab(n) 
+    {
+        var x = document.getElementsByClassName("tab");
+        x[n].style.display = "block";
+        if (n == 0) 
+        {
+            document.getElementById("prevBtn").style.display = "none";
+        } 
+        else 
+        {
+            document.getElementById("prevBtn").style.display = "inline";
+        }
+        if (n == (x.length - 1)) 
+        {
+            document.getElementById("nextBtn").style.display = "none";
+            document.getElementById("mysubmit").style.display = "inline-block";
+        } 
+        else 
+        {
+            document.getElementById("nextBtn").style.display = "inline";
+            document.getElementById("mysubmit").style.display = "none";
+        }
+        fixStepIndicator(n)
+    }
+    function nextPrev(n) 
+    {
+        var x = document.getElementsByClassName("tab");
+        if(n==1 && !validateForm()) 
+        return false;
+        x[currentTab].style.display = "none";
+        currentTab = currentTab + n;
+        if (currentTab >= x.length) 
+        {
+            document.getElementById("regForm").submit();
+            return false;
+        }
+        showTab(currentTab);
+    }
+    function validateForm() 
+    {
+        var x, y, i, valid = true;
+        x = document.getElementsByClassName("tab");
+        if(currentTab==0)
+        {
+            y = x[currentTab].getElementsByTagName("select");
+            if(y[0].value=="sudoku")
+                {document.getElementById("regForm").submit();}
+            
+        }
+        else if(currentTab==1)
+        {
+            nplayers = parseInt(x[currentTab].getElementsByTagName("select")[0].value);
+            console.log(nplayers);
+        }
+        else
+        {
+            y = x[currentTab].getElementsByTagName("select");
+            for(i = 0; i < nplayers; i++)
+            {
+                console.log(y[i].value);
+                if(y[i].value=="none")
+                {
+                    y[i].className = "invalid";
+                    valid = false;
+                }
+            }
+            if(valid)
+            {   
+                for (i = 0; i < y.length; i++) 
+                {
+                    for(var j=i+1;j<y.length;j++)
+                    if (y[i].value != "none" && y[j].value !="none" && y[i].value == y[j].value) 
+                    {
+                        y[i].className = "invalid";
+                        valid = false;
+                    }
+                }
+            }
+        }
+        if(valid) 
+        {
+            document.getElementsByClassName("step")[currentTab].className += " finish";
+        }
+        return valid; 
+    }
+    function fixStepIndicator(n) 
+    {
+        var i, x = document.getElementsByClassName("step");
+        for (i = 0; i < x.length; i++) 
+        {
+            x[i].className = x[i].className.replace("active", "");
+        }
+        x[n].className += " active";
+    }
+</script>
+<style>
+    .tab label{
+        color: black;
+    }
+    @media screen and (max-width: 450px){
+        .myhead{
+            color: black;
+            font-size: small;
+            text-align: center;
+            word-wrap: break-word;
+        }
+        .mylabel{
+            display: none;
+        }
+    }
+    @media screen and (min-width: 450px){
+        .myhead{
+            color: black;
+            font-size: small;
+            text-align: center;
+            word-wrap: break-word;
+        }
+        .mylabel{
+            display: none;
+        }
+    }
+    @media screen and (min-width: 900px){
+        .myhead{
+            color: black;
+            font-size: xx-large;
+            text-align: center;
+        }
+        .mylabel{
+            color: black;
+            display: block;
+        }
+    }
+    .active-animatioon 
+    {
+        background-image: linear-gradient(90deg, blue 50%, transparent 50%), linear-gradient(90deg, yellow 50%, transparent 50%), linear-gradient(0deg, red 50%, transparent 50%), linear-gradient(0deg, green 50%, transparent 50%);
+        background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+        background-size: 100px 5px, 100px 5px, 5px 100px, 5px 100px;
+        background-position: left top, right bottom, left bottom, right   top;
+        animation: border-dance 1s infinite linear;
+    }
+    @keyframes border-dance 
+    {
+        0% {
+        background-position: left top, right bottom, left bottom, right   top;
+        }
+        100% {
+        background-position: left 100px top, right 100px bottom , left bottom 100px , right   top 100px;
+        }
+    }
+        
+    #regForm 
+    {
+        margin: 100px auto;
+        padding: 40px;
+        width: 70%;
+        border-radius: 20px;
+        background: linear-gradient(
+            red,
+            yellow,
+            blue,
+            green
+        );
+    }
+    .tab input 
+    {
+        padding: 10px;
+        width: 100%;
+        font-size: 17px;
+        font-family: Raleway;
+        border: none;
+        outline: none;
+        background: none;
+        border-bottom: 2px solid black;
+    }
+    ::placeholder
+    {
+        text-align: center;
+    }
+    input.validated
+    {
+        border: none;
+        outline: none;
+    }
+    select.invalid
+    {
+        border: 1px solid red;
+    }
+    input.invalid 
+    {
+        border: 1px solid red;
+    }
+    .tab 
+    {
+        display: none;
+    }
+    .step 
+    {
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbbbbb;
+        border: none;
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0.5;
+    }
+    .step.active 
+    {
+        opacity: 1;
+    }
+    .step.finish 
+    {
+        background-color: #4CAF50;
+    }
+    body
+    {
+        background-color: #111845;;
+        background-size: cover;
+    }
+    .background-img
+    {
+        background-image: url("https://3.bp.blogspot.com/-piZWCW2uUbg/W2fPXxkWZgI/AAAAAAAAOu0/eydmMjTIqcwLMHEEr2H7imqoRTxMw4o9QCLcBGAs/s1600/among_trees_night_dribbble.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        margin: 5% auto;
+        padding:20px;
+        border: 1px solid #2a3cad;
+        border-radius: 4px;
+        box-shadow: 0px 0px 5px #2a3cad;
+    }
+
+    .box
+    {
+        background: #111845a6;
+        box-sizing: border-box;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgb(23, 32, 90);
+        border: 2px solid #2a3cad;
+        color: white;
+        padding: 20px;
+    }
+
+    .box:before{
+        content: '';
+        width:100%;
+        height:100%;
+        background: rgba(255,255,255,0.1);
+        transition:0.5s;
+        pointer-events: none;
+    }
+
+    .box:hover:before{
+        transform: skewX(100deg);
+    }
+
+
+    .box .content{
+        border:1px solid #f0a591;
+        padding:20px;
+        width: 100%;
+        height: 100%;
+        text-align:center;
+        box-shadow: 0 5px 10px rgba(9,0,0,0.5); 
+    }
+
+    .box .myborder{
+        width: 100%;
+        height: 100%;
+        display: block;
+        box-sizing: border-box;
+    }
+
+    .box .myborder:nth-child(1)
+    {
+        transform:rotate(0deg);
+    }
+
+    .box .myborder:nth-child(2)
+    {
+        transform:rotate(180deg);
+    }
+
+    .box .myborder:nth-child(3)
+    {
+        transform:rotate(180deg);
+    }
+
+    .box .myborder:nth-child(4)
+    {
+        transform:rotate(360deg);
+    }
+
+    .box .myborder:before
+    {
+        content: '';
+        position: absolute;
+        width:100%;
+        height: 2px;
+        background: red;
+        animation: animate 4s linear infinite;
+    }
+
+    @keyframes animate 
+    {
+        0% {
+            transform:scaleX(0);
+            transform-origin: left;
+        }
+        50%
+        {
+            transform:scaleX(1);
+            transform-origin: left;
+        }
+        50.1%
+        {
+            transform:scaleX(1);
+            transform-origin: right;   
+        }
+        100%
+        {
+            transform:scaleX(0);
+            transform-origin: right;
+        }
+    } 
+</style>
+
+{% endblock %}

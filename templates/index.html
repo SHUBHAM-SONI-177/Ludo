@@ -1,0 +1,191 @@
+{% extends 'navbar.html' %}
+{% block title %} Ludo {% endblock%}
+
+{% block body %}
+<div class="container" style="text-align: center;">
+    <div class="row" style="min-height: 100px;">
+      
+    </div>
+    <div class="row active-animatioon" style="border-radius: 10px;">
+        <div class="col-1"></div>
+        <div class="col-10" style="padding: 10%;">
+            <h1 style="text-align: center;color: aliceblue;">This is a game with maximum of four players</h1>
+            <form action="/users/">
+                    <button style="padding: 5px; height: 40px;border-radius: 10px;" class="draw btn-block">Go</button>
+            </form>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+<div class="container-fluid" id="canvas">
+
+</div>
+
+<style>
+  @media screen and (max-width: 450px) and (max-height: 700px){
+    
+  }
+button 
+{
+  background: none;
+  border: 0;
+  box-sizing: border-box;
+  margin: 1em;
+  padding: 1em 2em;
+  box-shadow: inset 0 0 0 2px #f45e61;
+  color: #f45e61;
+  font-size: inherit;
+  font-weight: 700;
+  position: relative;
+  vertical-align: middle;
+}
+button::before, button::after {
+  box-sizing: inherit;
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+        .draw {
+  -webkit-transition: color 0.25s;
+  transition: color 0.25s;
+}
+.draw::before, .draw::after {
+  border: 5px solid transparent;
+  width: 0;
+  height: 0;
+}
+.draw::before {
+  top: 0;
+  left: 0;
+}
+.draw::after {
+  bottom: 0;
+  right: 0;
+}
+.draw:hover {
+  color: #60daaa;
+}
+.draw:hover::before, .draw:hover::after {
+  width: 100%;
+  height: 100%;
+}
+.draw:hover::before {
+  border-top-color: yellow;
+  border-right-color: red;
+  -webkit-transition: width 0.25s ease-out, height 0.25s ease-out 0.25s;
+  transition: width 0.25s ease-out, height 0.25s ease-out 0.25s;
+}
+.draw:hover::after {
+  border-bottom-color: blue;
+  border-left-color: green;
+  -webkit-transition: border-color 0s ease-out 0.5s, width 0.25s ease-out 0.5s, height 0.25s ease-out 0.75s;
+  transition: border-color 0s ease-out 0.5s, width 0.25s ease-out 0.5s, height 0.25s ease-out 0.75s;
+}
+  .active-animatioon {
+    background-image: linear-gradient(90deg, blue 50%, transparent 50%), linear-gradient(90deg, yellow 50%, transparent 50%), linear-gradient(0deg, red 50%, transparent 50%), linear-gradient(0deg, green 50%, transparent 50%);
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    background-size: 30px 10px, 30px 10px, 10px 30px, 10px 30px;
+    background-position: left top, right bottom, left bottom, right   top;
+    animation: border-dance 0.2s infinite linear;
+  }
+  @keyframes border-dance {
+    0% {
+      background-position: left top, right bottom, left bottom, right   top;
+    }
+    100% {
+      background-position: left 30px top, right 30px bottom , left bottom 30px , right   top 30px;
+    }
+  }
+        
+body{
+    background-image: url(https://image.freepik.com/free-vector/game-background_23-2148080814.jpg);
+    background-size: cover;
+}
+#canvas {
+    position: relative;
+    background: none;
+    margin: 1em auto;
+}
+.ball {
+    background-color: black;
+    position: absolute;
+    display: inline-block;
+    border-radius: 50%;
+}
+</style>
+<script>
+    var canvas = {
+                    element: document.getElementById('canvas'),
+                    width: 1000,
+                    height: 400,
+                    initialize: function () {
+                        this.element.style.width = this.width + 'px';
+                        this.element.style.height = this.height + 'px';
+                        document.body.appendChild(this.element);
+                    }
+                };
+
+var Ball = {
+    create: function (color, dx, dy) {
+        var newBall = Object.create(this);
+        newBall.dx = dx;
+        newBall.dy = dy;
+        newBall.width = 40;
+        newBall.height = 40;
+        newBall.element = document.createElement('div');
+        newBall.element.style.backgroundColor = color;
+        newBall.element.style.width = newBall.width + 'px';
+        newBall.element.style.height = newBall.height + 'px';
+        newBall.element.className += ' ball';
+        newBall.width = parseInt(newBall.element.style.width);
+        newBall.height = parseInt(newBall.element.style.height);
+        canvas.element.appendChild(newBall.element);
+        return newBall;
+    },
+    moveTo: function (x, y) {
+        this.element.style.left = x + 'px';
+        this.element.style.top = y + 'px';
+    },
+    changeDirectionIfNecessary: function (x, y) {
+        if (x < 0 || x > canvas.width - this.width) {
+            this.dx = -this.dx;
+        }
+        if (y < 0 || y > canvas.height - this.height) {
+            this.dy = -this.dy;
+        }
+    },
+    draw: function (x, y) {
+        this.moveTo(x, y);
+        var ball = this;
+        setTimeout(function () {
+            ball.changeDirectionIfNecessary(x, y);
+            ball.draw(x + ball.dx, y + ball.dy);
+        }, 1000 / 60);
+    }
+};
+
+    canvas.initialize();
+    var ball1 =  Ball.create("blue", 4, 3);
+    var ball2 =  Ball.create("red", 1, 5);
+    var ball3 =  Ball.create("green", 2, 2);
+    var ball4 =  Ball.create("yellow", 5, 0);
+    ball1.draw(70, 0);
+    ball2.draw(20, 200);
+    ball3.draw(300, 330);
+    ball4.draw(350, 100);
+    if (matchMedia) {
+        const mq = window.matchMedia("(max-width: 500px)");
+        mq.addListener(WidthChange);
+        WidthChange(mq);
+    }
+    function WidthChange(mq) {
+        if(mq.matches)
+        {
+          canvas.width = 400;
+          canvas.height = 400;
+        }    
+        
+    }
+</script>
+{% endblock %}

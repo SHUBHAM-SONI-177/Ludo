@@ -1,0 +1,748 @@
+{% extends 'users/basic.html' %}
+{% block title %} Ludo {% endblock%}
+
+{% block body %}
+
+<div style="margin-top: 20px; border: 1px solid black;text-align: center;background-color: black;" class="shadow-lg dicecontainer">
+    <div style="text-align: center;">
+        <p style="color: white;" id="uselesstext1">It`s <b id="player" style="color:{{players.0}}">{{players.0}}</b>s turn</p>
+    </div>
+    <div id="dice">
+        {% load static %}
+        <img id="RealDice" src="{% static 'users/Dice1.png' %}" alt="" width="100" height="100">
+    </div>
+    <br>
+    <br><br>
+    <button id="rollbtn" onclick="start()">Roll</button>
+    <button id="stopbtn" onclick="stop()" style="display: none;">Stop</button>
+    <p style="color: red;" id="badtext"></p>
+</div>
+
+<div class="shadow-lg" id="mycontainer">
+    <div class="row mybox1">
+        <div class="col-4 box1">
+            <div id="box11">
+                <br>
+                <div class="row">
+                    <div class="rounded-circle andarkablock1"></div>
+                    <div class="rounded-circle andarkablock1"></div>
+                </div>
+                <div class="row midest">
+                    <div class="col" style="text-align: center;">
+                        <b id="box1player"></b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="rounded-circle andarkablock1"></div>
+                    <div class="rounded-circle andarkablock1"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-1 mycol">
+            <div class="row mygrid box1route11 box2route50 box3route24 box4route37">                </div>
+            <div class="row mygrid box1route10 box2route49 box3route23 box4route36">                </div>
+            <div class="row mygrid box1route9 box2route48 box3route22 box4route35">                 </div>
+            <div class="row mygrid box1route8 box2route47 box3route21 box4route34">                 </div>
+            <div class="row mygrid box1route7 box2route46 box3route20 box4route33">                 </div>
+            <div class="row mygrid box1route6 box2route45 box3route19 box4route32">                 </div>
+        </div>
+        <div class="col-1 mycol">
+            <div class="row mygrid box1route12 box2route51 box3route25 box4route38">                </div>
+            <div class="row mygrid box2route52"  id="box2exit">                                     </div>
+            <div class="row mygrid box2route53"  id="box2exit">                                     </div>
+            <div class="row mygrid box2route54"  id="box2exit">                                     </div>
+            <div class="row mygrid box2route55"  id="box2exit">                                     </div>
+            <div class="row mygrid box2route56"  id="box2exit">                                     </div>
+        </div>
+        <div class="col-1 mycol">
+            <div class="row mygrid box1route13 box3route26 box4route39">                            </div>
+            <div class="row mygrid box1route14 box2route1 box3route27 box4route40" id="box2exit">   </div>
+            <div class="row mygrid box1route15 box2route2 box3route28 box4route41">                 </div>
+            <div class="row mygrid box1route16 box2route3 box3route29 box4route42">                 </div>
+            <div class="row mygrid box1route17 box2route4 box3route30 box4route43">                 </div>
+            <div class="row mygrid box1route18 box2route5 box3route31 box4route44">                 </div>
+        </div>
+        <div class="col-4 box2">
+            <div id="box22">
+                <br>
+                <div class="row">
+                    <div class="rounded-circle andarkablock2"></div>
+                    <div class="rounded-circle andarkablock2"></div>
+                </div>
+                <div class="row midest">
+                    <div class="col" style="text-align: center;">
+                        <b id="box2player"></b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="rounded-circle andarkablock2"></div>
+                    <div class="rounded-circle andarkablock2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row midrow">
+        <div class="col-4">
+            <div class="row">
+                <div class="col"><div class="row mygridd box2route39 box3route13 box4route26"></div> </div>
+                <div class="col"><div class="row mygridd box1exit box1route1 box2route40 box3route14 box4route27" id="box1exit"></div></div>
+                <div class="col"><div class="row mygridd box1route2 box2route41 box3route15 box4route28"></div></div>
+                <div class="col"><div class="row mygridd box1route3 box2route42 box3route16 box4route29"></div></div>
+                <div class="col"><div class="row mygridd box1route4 box2route43 box3route17 box4route30"></div></div>
+                <div class="col"><div class="row mygridd box1route5 box2route44 box3route18 box4route31"></div></div>
+            </div>
+        </div>
+        <div class="col-1 mycol"></div>
+        <div class="col-1 mycol"></div>
+        <div class="col-1 mycol"></div>
+        <div class="col-4">
+            <div class="row">
+                <div class="col"><div class="row mygridd box1route19 box2route6 box3route32 box4route45"></div></div>
+                <div class="col"><div class="row mygridd box1route20 box2route7 box3route33 box4route46"></div></div>
+                <div class="col"><div class="row mygridd box1route21 box2route8 box3route34 box4route47"></div></div>
+                <div class="col"><div class="row mygridd box1route22 box2route9 box3route35 box4route48"></div></div>
+                <div class="col"><div class="row mygridd box1route23 box2route10 box3route36 box4route49"></div></div>
+                <div class="col"><div class="row mygridd box1route24 box2route11 box3route37 box4route50"></div></div>
+            </div>
+        </div>
+    </div>
+    <div class="row midrow">
+        <div class="col-4">
+            <div class="row">
+                <div class="col"><div class="row mygridd box1route51 box2route38 box3route12 box4route25"></div></div>
+                <div class="col"><div class="row mygridd box1route52" id="box1exit"></div></div>
+                <div class="col"><div class="row mygridd box1route53" id="box1exit"></div></div>
+                <div class="col"><div class="row mygridd box1route54" id="box1exit"></div></div>
+                <div class="col"><div class="row mygridd box1route55" id="box1exit"></div></div>
+                <div class="col"><div class="row mygridd box1route56" id="box1exit"></div></div>
+            </div>
+        </div>
+        <div class="col-1 mycol"></div>
+        <div class="col-1 mycol"></div>
+        <div class="col-1 mycol"></div>
+        <div class="col-4">
+            <div class="row">
+                <div class="col"><div class="row mygridd box4route56"  id="box4exit"></div></div>
+                <div class="col"><div class="row mygridd box4route55"  id="box4exit"></div></div>
+                <div class="col"><div class="row mygridd box4route54"  id="box4exit"></div></div>
+                <div class="col"><div class="row mygridd box4route53"  id="box4exit"></div></div>
+                <div class="col"><div class="row mygridd box4route52"  id="box4exit"></div></div>
+                <div class="col"><div class="row mygridd box1route25 box2route12 box3route38 box4route51"></div></div>
+            </div>
+        </div>
+    </div>
+    <div class="row midrow">
+        <div class="col-4">
+            <div class="row">
+                <div class="col"><div class="row mygridd box1route50 box2route37 box3route11 box4route24"></div></div>
+                <div class="col"><div class="row mygridd box1route49 box2route36 box3route10 box4route23"></div></div>
+                <div class="col"><div class="row mygridd box1route48 box2route35 box3route9 box4route22"></div></div>
+                <div class="col"><div class="row mygridd box1route47 box2route34 box3route8 box4route21"></div></div>
+                <div class="col"><div class="row mygridd box1route46 box2route33 box3route7 box4route20"></div></div>
+                <div class="col"><div class="row mygridd box1route45 box2route32 box3route6 box4route19"></div></div>
+            </div>
+        </div>
+        <div class="col-1 mycol"></div>
+        <div class="col-1 mycol"></div>
+        <div class="col-1 mycol"></div>
+        <div class="col-4">
+            <div class="row">
+                <div class="col"><div class="row mygridd box1route31 box2route18 box3route44 box4route5"></div></div>
+                <div class="col"><div class="row mygridd box1route30 box2route17 box3route43 box4route4"></div></div>
+                <div class="col"><div class="row mygridd box1route29 box2route16 box3route42 box4route3"></div></div>
+                <div class="col"><div class="row mygridd box1route28 box2route15 box3route41 box4route2"></div></div>
+                <div class="col"><div class="row mygridd box1route27 box2route14 box3route40 box4route1" id="box4exit"></div></div>
+                <div class="col"><div class="row mygridd box1route26 box2route13 box3route39"></div></div>
+            </div>
+        </div>
+    </div>
+    <div class="row mybox2">
+        <div class="col-4 box3">
+            <div id="box33">
+                <br>
+                <div class="row">
+                    <div class="rounded-circle andarkablock3"></div>
+                    <div class="rounded-circle andarkablock3"></div>
+                </div>
+                <div class="row midest">
+                    <div class="col" style="text-align: center;">
+                        <b id="box3player"></b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="rounded-circle andarkablock3"></div>
+                    <div class="rounded-circle andarkablock3"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-1 mycol">
+            <div class="row mygrid box1route44 box2route31 box3route5 box4route18"></div>
+            <div class="row mygrid box1route43 box2route30 box3route4 box4route17"></div>
+            <div class="row mygrid box1route42 box2route29 box3route3 box4route16"></div>
+            <div class="row mygrid box1route41 box2route28 box3route2 box4route15"></div>
+            <div class="row mygrid box1route40 box2route27 box3route1 box4route14" id="box3exit"></div>
+            <div class="row mygrid box1route39 box2route26 box4route13"></div>
+        </div>
+        <div class="col-1 mycol">
+            <div class="row mygrid box3route56" id="box3exit"></div>
+            <div class="row mygrid box3route55" id="box3exit"></div>
+            <div class="row mygrid box3route54" id="box3exit"></div>
+            <div class="row mygrid box3route53" id="box3exit"></div>
+            <div class="row mygrid box3route52" id="box3exit"></div>
+            <div class="row mygrid box1route38 box2route25 box3route51 box4route12"></div>
+        </div>
+        <div class="col-1 mycol">
+            <div class="row mygrid box1route32 box2route19 box3route45 box4route6"></div>
+            <div class="row mygrid box1route33 box2route20 box3route46 box4route7"></div>
+            <div class="row mygrid box1route34 box2route21 box3route47 box4route8"></div>
+            <div class="row mygrid box1route35 box2route22 box3route48 box4route9"></div>
+            <div class="row mygrid box1route36 box2route23 box3route49 box4route10"></div>
+            <div class="row mygrid box1route37 box2route24 box3route50 box4route11"></div>
+        </div>
+        <div class="col-4 box4">
+            <div id="box44">
+                <br>
+                <div class="row">
+                    <div class="rounded-circle andarkablock4"></div>
+                    <div class="rounded-circle andarkablock4"></div>
+                </div>
+                <div class="row midest">
+                    <div class="col" style="text-align: center;">
+                        <b id="box4player"></b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="rounded-circle andarkablock4"></div>
+                    <div class="rounded-circle andarkablock4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var currcolor = "";
+    var NumOfPaw = "";
+    var num = 0;
+    var clicked = false;
+    var currpawn = "";
+    var allcolor = [];
+    var pawnOut = {red:0,blue:0,green:0,yellow:0};
+    var victimcolor = "";
+    function HaveHover() 
+    {
+        var count = 0;
+        var toKill = "";
+        for (var i = 0; i < allcolor.length; i++) 
+        {
+            for (var n = 1; n <= 4; n++) 
+            {
+                var firstPawn = currBox[allcolor[i] + "pawn" + n];
+                var secondPawn=currBox[currpawn];
+                if (firstPawn==secondPawn && currcolor!=allcolor[i] && positions[currpawn]+num < 57) 
+                {
+                    count++;
+                    toKill = allcolor[i] + "pawn" + n;
+                    victimcolor = allcolor[i];
+                    return toKill;
+                }
+            }
+        }
+        return false;
+    }
+    function Stuck() 
+    {
+        var text = document.getElementById('player');
+        if (positions[currpawn] == 0 || positions[currpawn]+num > 57)
+        {
+            if(DontHaveOtherFree())
+            {
+                var badtext = document.getElementById('badtext');
+                badtext.innerText = "Unfortunatlly you stuck";
+                clicked = false;
+                document.getElementById('rollbtn').style.display="block";
+            }
+        }
+    }
+    function changePlayer() 
+    {
+        if (num != 6)
+        {
+            var text = document.getElementById('player');
+            var ii = 0;
+            var tempstr = "";
+            var mycheck = false;
+            {% for j in players%}
+                if(ii == 0)
+                {
+                    tempstr = "{{ j }}";
+                }
+                else
+                {
+                    if(text.innerText == tempstr)
+                    {
+                        text.innerText = text.style.color= "{{ j }}";
+                        mycheck = true;
+                    }
+                    else
+                    {
+                        tempstr = "{{ j }}";
+                    }
+                }
+                ii+=1;
+            {% endfor %}
+            if(!mycheck)
+            {
+                text.innerText = text.style.color = "{{players.0}}";
+            }
+        }
+        var badtext = document.getElementById('badtext');
+        badtext.innerText = "";
+    }
+    var positions = {redpawn1: 0, redpawn2: 0, redpawn3: 0, redpawn4: 0,bluepawn1: 0, bluepawn2: 0, bluepawn3: 0, bluepawn4: 0,greenpawn1: 0, greenpawn2: 0, greenpawn3: 0, greenpawn4: 0,yellowpawn1: 0, yellowpawn2: 0, yellowpawn3: 0, yellowpawn4: 0};
+    var prevboxcolor = {redpawn1: "black", redpawn2: "black", redpawn3: "black", redpawn4: "black",bluepawn1: "black", bluepawn2: "black", bluepawn3: "black", bluepawn4: "black",greenpawn1: "black", greenpawn2: "black", greenpawn3: "black", greenpawn4: "black",yellowpawn1: "black", yellowpawn2: "black", yellowpawn3: "black", yellowpawn4: "black"};
+    var currBox = {redpawn1: "", redpawn2: "", redpawn3: "", redpawn4: "",bluepawn1: "", bluepawn2: "", bluepawn3: "", bluepawn4: "",greenpawn1: "", greenpawn2: "", greenpawn3: "", greenpawn4: "",yellowpawn1: "", yellowpawn2: "", yellowpawn3: "", yellowpawn4: ""};
+
+    function DontHaveOtherFree()
+    {
+        var text = document.getElementById('player');
+        for (var i = 1; i <=4; i++){
+            if (positions[text.innerText + "pawn" + i] != 0 && positions[text.innerText + "pawn" + i]+num <= 57)return false;
+        }
+        return true;
+    }
+    function CheckForWinner()
+    {
+        if (pawnOut[currcolor] == 4) 
+        {
+            var dice = document.getElementById("dice");
+            var player = document.getElementById("player");
+            var uselesstext1 = document.getElementById("uselesstext1");
+            var uselesstext2 = document.getElementById("uselesstext2");
+            dice.innerText = "";
+            dice.style.visibility = "hidden";
+            uselesstext1.innerText = "";
+            uselesstext2.innerText = "";
+            player.innerText = "The Winner is the "+currcolor+" player";
+        }
+    }
+    function takesteps()
+    {
+        var doc = document.getElementById(currpawn);
+        var prevpos = document.getElementsByClassName(''+mymapping[currcolor]+'route'+positions[currpawn]+'');
+        var mynewbox = positions[currpawn]+1;
+        if(mynewbox<57)
+        {
+            var curr = document.getElementsByClassName(''+mymapping[currcolor]+'route'+mynewbox+'');
+            prevpos[0].removeChild(doc);
+            var innerBox = prevpos[0].getElementsByTagName("div");
+            if(innerBox.length == 0)
+                prevpos[0].style.backgroundColor = ''+prevboxcolor[currpawn]+'';
+                
+            var innerBox1 = curr[0].getElementsByTagName("div");
+            if(innerBox1.length > 0)
+                prevboxcolor[currpawn] = prevboxcolor[innerBox1[0].id];
+
+            else
+                prevboxcolor[currpawn] = curr[0].style.backgroundColor;
+
+            curr[0].style.backgroundColor="black";
+            curr[0].appendChild(doc);
+            currBox[currpawn]=curr[0];
+        }
+        else
+        {
+            prevpos[0].removeChild(doc);
+            var innerBox = prevpos[0].getElementsByTagName("div");
+            if(innerBox.length == 0)
+                prevpos[0].style.backgroundColor = ''+prevboxcolor[currpawn]+'';
+            prevboxcolor[currpawn] = "";
+        }
+        positions[currpawn]++;
+    }
+    function ResetPawn(victim) 
+    {
+        positions[victim] = 0;
+        var pawnToMove = document.getElementById(victim);
+        pawnToMove.style.backgroundColor="";
+        pawnToMove.style.border='20px solid '+victimcolor+'';
+        pawnToMove.style.padding="10px";
+        pawnToMove.style.width="";
+        pawnToMove.style.height="";
+        var str = mymapping[victimcolor];
+        var matches = str.match(/(\d+)/);
+        var Boxx = document.getElementById('box'+matches[0]+''+matches[0]+'');
+        var Boxforthis = Boxx.getElementsByClassName("row");
+        var Boxforthis1 = Boxforthis[0].getElementsByClassName("rounded-circle");
+        var Boxforthis2 = Boxforthis[2].getElementsByClassName("rounded-circle");
+        if(Boxforthis1.length<2)
+        Boxforthis[0].appendChild(pawnToMove);
+        else
+        Boxforthis[2].appendChild(pawnToMove);
+    }
+    function randomMove(Color, paw) 
+    {
+        var text = document.getElementById('player');
+        NumOfPaw = paw;
+        currcolor = Color;
+        currpawn = currcolor + "pawn" + NumOfPaw;
+        var currPos = positions[currpawn];
+        if (num + currPos > 57) {
+            Stuck();
+        }
+        else 
+        {
+            if (clicked) 
+            {
+                var position = currPos;
+                if(text.innerText == currcolor) 
+                {
+                    if (positions[currpawn] != 0 || num == 6) 
+                    {
+                        if (positions[currpawn] == 0) 
+                        {
+                            console.log("YES");
+                            var doc = document.getElementById(currpawn);
+                            doc.style.border = "";
+                            doc.style.backgroundColor=Color;
+                            doc.style.width="5px";
+                            doc.style.height="5px";
+                            var docc = document.querySelector('.'+mymapping[Color]+'route1');
+                            var innerBox = docc.getElementsByTagName("div");
+                            if(innerBox.length > 0)
+                            prevboxcolor[currpawn] = prevboxcolor[innerBox[0].id];
+                            else
+                            prevboxcolor[currpawn] = docc.style.backgroundColor;
+                            docc.style.backgroundColor="black";
+                            docc.appendChild(doc);
+                            positions[currpawn] = 1;
+                            currBox[currpawn]=docc;
+                        }
+                        else 
+                        {
+                            for (i = 0; i < num; i++){
+                                takesteps();
+                            }
+                            currPos = positions[currpawn];
+                            if (currPos == 57){
+                                pawnOut[currcolor]++;
+                            }
+                            changePlayer();
+                        }
+                        var victim = HaveHover();
+                        if (victim != false) {
+                            ResetPawn(victim);
+                        }
+                        CheckForWinner();
+                        num = 0;
+                        clicked = false;
+                        document.getElementById('rollbtn').style.display="block";
+                    }
+                    else Stuck();
+                }
+            }
+        }
+    }
+    var mymapping = {};
+    mystartfunction();
+    function mystartfunction()
+    {
+        var map = {"green":false,"red":false,"yellow":false,"blue":false};
+        var arr = ["green","red","yellow","blue"];
+        var i=0;
+        {% for j in players %}
+            i=i+1;
+            document.getElementsByClassName("box"+i)[0].style.backgroundColor="{{ j }}";
+            var ch = "andarkablock"+i;
+            var mydoc = document.querySelectorAll('.'+ch+'');
+            var myexit = document.querySelectorAll('[id=box'+i+'exit]');
+            for(var ele=0;ele<myexit.length;ele++)
+            {
+                myexit[ele].style.backgroundColor="{{ j }}";
+            }
+            for(var ele=0;ele<mydoc.length;ele++)
+            {
+                var myindex = ele+1;
+                mydoc[ele].id='{{ j }}pawn'+myindex+'';
+                mydoc[ele].style.border="20px solid {{ j }}";
+                mydoc[ele].setAttribute('onclick','randomMove("{{ j }}",'+myindex+')');
+            }
+            document.getElementById("box"+i+"player").innerHTML="Player"+i; 
+            map["{{ j }}"]=true;
+            mymapping["{{ j }}"]="box"+i;
+            allcolor.push("{{ j }}");
+        {% endfor %}
+        for(var jj =i+1;jj<=4;jj++)
+        {
+            for(var ii=0;ii<4;ii++)
+            {
+                if(!map[arr[ii]])
+                {
+                    document.getElementsByClassName("box"+jj)[0].style.backgroundColor=arr[ii];
+                    var ch = "andarkablock"+jj;
+                    var mydoc = document.querySelectorAll('.'+ch+'');
+                    var myexit = document.querySelectorAll('[id=box'+jj+'exit]');
+                    for(var ele=0;ele<myexit.length;ele++)
+                    {
+                        myexit[ele].style.backgroundColor=arr[ii];
+                    }
+                    for(var ele=0;ele<mydoc.length;ele++)
+                    {
+                        mydoc[ele].style.border='20px solid '+arr[ii]+'';
+                        var mydocc = mydoc[ele];
+                        mydocc.onclick= ""
+                    }
+                    map[arr[ii]]=true;
+                    break;
+                }
+            }
+        }
+
+    }
+    var deg = 2;
+    var rotation_diff = 30;
+    var rotation;
+    function start()
+    {
+        rotation=1;    
+        rotatedice();
+    }
+    function stop()
+    {
+        rotation=0;    
+    }
+    function rotatedice()
+    {
+        document.getElementById('stopbtn').style.display="inline-block";
+        var img = document.getElementById("dice");
+        img.style.webkitTransform = "rotate("+deg+"deg)";
+        img.style.transform = "rotate("+deg+"deg)";
+        img.style.MozTransform = "rotate("+deg+"deg)";
+        img.style.msTransform = "rotate("+deg+"deg)";
+        img.style.OTransform = "rotate("+deg+"deg)";
+        if(rotation==1){setTimeout("rotatedice()",1);
+            rollmydice();
+        }
+        else
+        {
+            document.getElementById('stopbtn').style.display="none";
+            if (!clicked){
+                clicked = true;
+            }
+            if (num != 6 && DontHaveOtherFree()){
+                var bad = document.getElementById('badtext');
+                bad.innerText = "Unfortunatlly you stuck";
+                window.setTimeout(changePlayer, 1000);
+                clicked = false;            
+                document.getElementById('rollbtn').style.display="block";
+            }
+        }
+        deg = deg + rotation_diff;        
+        
+    }    
+    function rollmydice(){
+        var bolls = Math.floor(Math.random() * 4) + 3;
+        document.getElementById('rollbtn').style.display="none";
+        var Dice = document.getElementById('dice');
+        Dice.innerHTML="";
+        num = bolls;
+        if(bolls==1)
+        {
+            {% load static %}
+            var x = document.createElement("img");
+            x.width="100";
+            x.height="100";
+            x.id="RealDice";
+            x.src="{% static 'users/Dice1.png' %}";
+            x.style.borderRadius="10px";
+            Dice.appendChild(x);
+        }
+        else if(bolls==2)
+        {
+            {% load static %}
+            var x = document.createElement("img");
+            x.width="100";
+            x.height="100";
+            x.id="RealDice";
+            x.src="{% static 'users/Dice2.png' %}";
+            x.style.borderRadius="10px";
+            Dice.appendChild(x);
+        }
+        else if(bolls==3)
+        {
+            {% load static %}
+            var x = document.createElement("img");
+            x.width="100";
+            x.height="100";
+            x.id="RealDice";
+            x.src="{% static 'users/Dice3.png' %}";
+            x.style.borderRadius="10px";
+            Dice.appendChild(x);
+        }
+        else if(bolls==4)
+        {
+            {% load static %}
+            var x = document.createElement("img");
+            x.width="100";
+            x.height="100";
+            x.id="RealDice";
+            x.src="{% static 'users/Dice4.png' %}";
+            x.style.borderRadius="10px";
+            Dice.appendChild(x);
+        }
+        else if(bolls==5)
+        {
+            {% load static %}
+            var x = document.createElement("img");
+            x.width="100";
+            x.height="100";
+            x.id="RealDice";
+            x.src="{% static 'users/Dice5.png' %}";
+            x.style.borderRadius="10px";
+            Dice.appendChild(x);
+        }
+        else
+        {
+            {% load static %}
+            var x = document.createElement("img");
+            x.width="100";
+            x.height="100";
+            x.id="RealDice";
+            x.src="{% static 'users/Dice6.png' %}";
+            x.style.borderRadius="10px";
+            Dice.appendChild(x);
+        }
+    }
+</script>
+
+<style>
+    @media screen and (min-width: 800px)
+    {
+        #dice{
+            width: 120px;
+            max-width: 120px;
+            height: 120px;
+            max-height: 120px;
+            display: inline-block;
+        }
+        .dicecontainer{
+            padding: 50px;
+            width: 300px;
+            height: 400px;
+            margin-left: 10px;
+        }
+        .mygridd{
+            border: 3px solid white;
+            width: 65px;
+            min-width: 65px;
+            min-height: 65px;
+            height: 65px;
+            max-height: 65px;
+        }
+        .mygrid{
+            width: 65px;
+            min-width: 65px;
+            min-height: 65px;
+            height: 65px;
+            max-height: 65px;
+            border: 3px solid white;
+        }
+        #box11,#box22,#box33,#box44{
+            padding: 10px;
+            border: 2px solid black;
+            background-color: white;
+            border-radius: 30px;
+            height: 100%;
+            width: 100%;
+        }
+        .andarkablock1,.andarkablock2,.andarkablock3,.andarkablock4{
+            padding: 10px;
+            cursor: pointer;
+            box-sizing: border-box;
+            margin: 5px auto;
+        }
+        #mycontainer{
+            position: absolute;
+            right: 100px;
+            top: 70px;
+            border: 2px solid black;
+            padding: 1%;
+            border-radius: 20px;
+            height: 1100px;
+            width: 1250px;
+            background-color: black;
+            background-image: linear-gradient(red,yellow,blue,green);
+        }
+        .mybox1{
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            border-left: 2px solid chocolate;
+            border-right: 2px solid chocolate;
+            border-top: 2px solid chocolate;
+            padding-left: 9%;
+            padding-right: 1%;
+            box-sizing: border-box;
+            margin-top: 1%;
+            margin-left: 1%;
+            margin-right: 1%;
+            padding-top: 3%;
+            background-color: black;
+        }
+        .mycol{
+            width: 65px;
+            min-width: 65px;
+            max-width: 65px;
+        }
+        .midrow{
+            border-left: 2px solid chocolate;
+            border-right: 2px solid chocolate;
+            padding-left: 9%;
+            padding-right: 1%;
+            box-sizing: border-box;
+            margin-left: 1%;
+            margin-right: 1%;
+            background-color: black;
+            
+        }
+        .midrow .mycol{
+            background-image: linear-gradient(-45deg, red,yellow,blue,green);
+        }
+        .mybox2{
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-left: 2px solid chocolate;
+            border-right: 2px solid chocolate;
+            border-bottom: 2px solid chocolate;
+            padding-left: 9%;
+            padding-right: 1%;
+            box-sizing: border-box;
+            margin-bottom: 1%;
+            margin-left: 1%;
+            margin-right: 1%;
+            padding-bottom: 3%;
+            background-color: black;
+        }
+        .box1,.box2,.box3,.box4{
+            border: 2px solid white;
+            padding-top: 2%;
+            padding-bottom: 2%;
+            background-color: black;
+            width: 390px;
+            height: 390px;
+            min-width: 390px;
+            min-height: 390px;
+            max-width: 390px;
+            max-height: 390px;
+        }
+        .midest{
+            padding-top: 15%;
+            padding-bottom: 15%;
+        }
+        .col-4{
+            width: 390px;
+            max-width: 390px;
+            min-width: 390px;
+        }
+    }
+</style>
+
+{% endblock %}
