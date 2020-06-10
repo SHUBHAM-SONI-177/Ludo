@@ -1,1 +1,1 @@
-web: gunicorn examportal.wsgi
+web: gunicorn Ludo.wsgi
