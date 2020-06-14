@@ -4,37 +4,43 @@
 {%block body %}
 
 <div class="container">
-  <div class="red box" style="text-align: center;"> 
-    <p>Register:</p>
-  </div>
   <div class="row">
-    <div class="col-md-1 col-xl-1 col-lg-1"></div>
-    <div class="col-md-10 col-xl-10 col-lg-10">
-      <form id="regForm" action="handlesignup" method="POST"  class="shadow-lg" style="border-radius: 30px;">
+    <div class="col-md-8 col-xl-8 col-lg-8 col-sm-12" id="mycontent">
+      
+      <div style="height: 500px;width: 600px;margin-top: 50px;text-align: center;" >
+        <p style="color: wheat;">Some thoughts are life changing</p>
+        {% load static %}
+        <img src="{% static 'users/index.png' %}" height="400" width="400">
+      </div>
+
+    </div>
+    <div class="col-md-4 col-xl-4 col-lg-4 col-sm-12">
+      <form id="regForm" action="handlesignup" method="POST" enctype="multipart/form-data" class="shadow-lg">
+        <div class="red box" style="text-align: center;"> 
+          <p>Register:</p>
+        </div>
         {% csrf_token %}
-        <div class="tab"><h1>Credential:</h1>
+        <div class="tab"><h2 class="text-danger">Credential:</h2>
           <br>
-            <label for="email"><b>Email</b></label>
             <input type="email" placeholder="Enter Email" name="email" required>
             <p id=email_hint></p>
           <br>
-            <label for="password"><b>Password</b></label>
             <input id="mypassword" type="password" placeholder="Enter Password" name="password" required>
             <p id=pass_hintt></p>
           <br>
-            <label for="repeat_password"><b>Repeat Password</b></label>
             <input type="password" placeholder="Repeat Password" name="repeat_password" required>
             <p id=pass_hint></p>
           <br>
         </div>
-        <div class="tab"><h1>Profile Info:</h1>
+        <div class="tab"><h3 class="text-danger">Profile Info:</h3>
+          <br><br>
           <div style="text-align: center;">
-            <img  class="rounded-circle" width="30%" src="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg">
+            <img id="myimage" style="cursor: pointer;" onclick="myfunction()" class="rounded-circle" width="200" src="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg">
           </div>
-            <label for="profilePic">Choose photo:</label>
-            <input type="file" id="avatar" name="profilePic" accept="image/png, image/jpeg" alt="https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1.jpg">
-            <label for="name"><b>Enter Full Name</b></label>
-            <input type="text" placeholder="Enter Name" name="name" required>
+            <input style="display: none;" type="file" id="avatar" name="profilePic" accept="image/png, image/jpeg">
+            <br><br>
+            <input type="text" placeholder="Enter Full Name" name="name" required>
+            <br><br><br><br>
         </div>
         <div style="overflow:auto;">
           <div style="float:left;">
@@ -44,41 +50,23 @@
             <button  style="width: 100%;background: none;border: none;" type="button" id="nextBtn" onclick="nextPrev(1)"><p><i class="fa fa-chevron-right"></i></p></button>
           </div>
           <div style="float: right;">
-            <button id="mysubmit" style="display: none;background: none;border: none;" type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#exampleModalCenter"><p><i class="fa fa-check"></i></p></button>
+            <button id="mysubmit" style="display: none;background: none;border: none;" type="submit"><p><i style="color: blue;" class="fa fa-check"></i></p></button>
           </div>
-          <div style="text-align: center;"><p>Already a User?  <a  style="color: red;" href="mylogin">LOGIN</a></p></div>
         </div>
+        <br>
+        <div style="text-align: center;"><p>Already a User?  <a  style="color: blue;" href="mylogin">LOGIN</a></p></div>
         <div style="text-align:center;margin-top:40px;">
           <span class="step"></span>
           <span class="step"></span>
         </div>
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalCenterTitle">Once saved cannot be changed</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                    Please Ensure that all data filled by you are correct as per your knowledge
-                </div>
-                <div class="modal-footer">
-                  <div class="clearfix">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="signupbtn btn btn-primary">Save changes</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </form>
     </div>
-    <div class="col-md-1 col-xl-1 col-lg-1"></div>
   </div>
 </div>
 <script type="text/javascript">
+  function myfunction(){
+    $('#avatar').trigger('click');
+  }
   var currentTab = 0;
   showTab(currentTab);
   function showTab(n) 
@@ -220,34 +208,31 @@
       valid = false;
     }
   });
-</script>
-<style>
-  @media screen and (max-width: 680px)
-  {
-    .red p
-    {
-      margin-top: 5%;
-      background-color: blanchedalmond;
-      width: 100%;
-      font-size: xx-large;
-      border-radius: 30px;
+  function readURL(input){
+    if (input.files && input.files[0]){
+      var reader = new FileReader();
+      reader.onload = function (e){
+          $('#myimage').attr('src', e.target.result);
+      }
+      reader.readAsDataURL(input.files[0]);
     }
   }
-  @media (min-width: 1200px) 
-  { 
-    .red p
-    {
-      margin-top: 10%;
-      background-color: blanchedalmond;
-      width: 40%;
-      margin-left: 30%;
-      font-size: xx-large;
-      border-radius: 30px;
-    }
+
+  $("#avatar").change(function(){
+    readURL(this);
+  });
+</script>
+<style>
+  .red{
+    font-size: xx-large;
+    width: 100%;
+    background-color: blanchedalmond;
   }
   #regForm 
   {
-    padding: 40px;
+    margin-top: 50px;
+    padding: 20px;
+    background-color: white;
   }
   .tab input 
   {
@@ -295,11 +280,11 @@
   }
   .step.finish 
   {
-    background-color: #4CAF50;
+    background-color: blue;
   }
   body
   {
-    background-image: repeating-linear-gradient(45deg,white,grey);
+    background-image: url(https://img.freepik.com/free-psd/dark-blue-glow-dust-particle-abstract-background-light-ray-shine-beam-effect_35672-1428.jpg?size=626&ext=jpg);
     background-size: cover;
     height: 100%;
   }

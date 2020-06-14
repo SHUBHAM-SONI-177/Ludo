@@ -71,7 +71,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item" href="/users/viewProfile" title="View Profile">View profile</a>
-                        <a class="dropdown-item" href="/users/mylogout" title="Logout">Logout</a>
+                        <a class="dropdown-item" href="/users/mylogout" title="Logout">Logout <i class="fa fa-sign-out fa-1x"></i></a>
                     </div>
             {% endif %}
             </form>
@@ -80,6 +80,7 @@
             {% endblock %}
     </body>
     <style>
+        
             .ml15 {
                 color: white;
                 font-weight: 800;
@@ -91,11 +92,13 @@
             display: inline-block;
             line-height: 1em;
             }
+            {% if not request.session.slogin %}
             .ml9 .text-wrapper {
             position: relative;
             display: inline-block;
             overflow: hidden;
             }
+            
 
             .ml9 .letter {
             transform-origin: 50% 100%;
@@ -107,8 +110,11 @@
             display: inline-block;
             line-height: 1em;
             }
+            {% endif %}
     </style>
+    {% if not request.session.slogin %}
     <script>
+        
         var textWrapper = document.querySelector('.ml9 .letters');
             textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
             anime.timeline({loop: true})
@@ -147,6 +153,7 @@
             delay: (el, i) => 100 + 30 * i
         });
     </script>
+    {% endif %}
     <script>
         anime.timeline({loop: true})
         .add({

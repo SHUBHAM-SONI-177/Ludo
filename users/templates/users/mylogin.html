@@ -4,16 +4,13 @@
 {% block  body %}
 <div class="container">
   <div class="row">
-    <div class="col-sm-2 col-md-2 col-xs-12"></div>
-    <div class="col-sm-8 col-md-8 col-xs-12 rounded" style="margin-bottom: 5%;">
-      <div style="margin-top: 10%; text-align: center;">
-        <img width="20%" src="https://softwaresuggest.imgix.net/software_logo/1495539705_followclass-192_mid.png" alt="">
-      </div>
-      <div class="red" style="text-align: center;"> 
-          <p>LOGIN</p>
-      </div>
-      <form class="myform shadow-lg" id='temp' action="handlelogin" method="POST" style="border-radius: 30px;margin-top: 2%;">
+    <div class="col-sm-3 col-md-3 col-xs-12"></div>
+    <div class="col-sm-6 col-md-6 col-xs-12 rounded">
+      <form class="myform shadow-lg" id='temp' action="handlelogin" method="POST">
         {% csrf_token %}
+        <div class="red" style="text-align: center;"> 
+          <p>LOGIN</p>
+        </div>
         <br><br><br><br>
         <div class= "box">
           <label class="mytext" for="email"><b>Email:&emsp;&ensp;&nbsp;&nbsp;&emsp;</b></label>
@@ -25,11 +22,11 @@
           <input style="background: none;border-bottom: black;" type="password" placeholder="Enter Password" name="password" required>
         </div>
         <br><br><br>
-        <div class="pt=3"><button type="submit" class="btn btn-block btn-outline-primary" style="border-radius: 10px;">Submit</button></div><br><br>
+        <div class="pt=3"><button type="submit" class="btn btn-block btn-primary" style="border-radius: 10px;">Login</button></div><br><br>
         <div class="mylink" style="text-align: center;"><p><span class="psw">Forgot <a style="color: green;" href="forgetpassword">PASSWORD?</a></span> &emsp; New User?  <a  style="color: red;" href="signup">SIGN UP</a></p></div>
       </form>
     </div>
-    <div class="col-sm-2 col-md-2 col-xs-12"></div>
+    <div class="col-sm-3 col-md-3 col-xs-12"></div>
   </div>
 </div>
 <style>
@@ -53,7 +50,7 @@
   }
   body
   {
-    background-image: repeating-linear-gradient(45deg,grey,white);
+    background-image: url(data:image/jpeg;base64,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);
     background-size: cover;
     height: 100%;
   }
@@ -63,11 +60,9 @@
   }
   form.myform
   {
-    margin-top: 200px;
-    padding-left: 25px;
-    padding-top: 10px;
-    padding-right: 25px;
-    padding-bottom: 25px;
+    background-color: white;
+    margin-top: 100px;
+    padding: 25px;
   }
   .box input
   {
@@ -84,7 +79,6 @@
   }
   ::placeholder
   {
-    color: white;
     text-align: center;
   }
   @media (min-width: 768px) 

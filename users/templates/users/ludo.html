@@ -5,7 +5,7 @@
 
 <div style="margin-top: 20px; border: 1px solid black;text-align: center;background-color: black;" class="shadow-lg dicecontainer">
     <div style="text-align: center;">
-        <p style="color: white;" id="uselesstext1">It`s <b id="player" style="color:{{players.0}}">{{players.0}}</b>s turn</p>
+        <p style="color: white;" id="uselesstext1">It`s <b id="player" style="color:{{players.0}}">{{names.0}}</b>s turn</p>
     </div>
     <div id="dice">
         {% load static %}
@@ -271,28 +271,32 @@
             var ii = 0;
             var tempstr = "";
             var mycheck = false;
-            {% for j in players%}
+            {% for j in players %}{% for k in names %}
+            {% if forloop.counter == forloop.parentloop.counter %}
                 if(ii == 0)
                 {
-                    tempstr = "{{ j }}";
+                    tempstr = "{{ k }}";
                 }
                 else
                 {
                     if(text.innerText == tempstr)
                     {
-                        text.innerText = text.style.color= "{{ j }}";
+                        text.innerText = "{{ k }}";
+                        text.style.color= "{{ j }}";
                         mycheck = true;
                     }
                     else
                     {
-                        tempstr = "{{ j }}";
+                        tempstr = "{{ k }}";
                     }
                 }
                 ii+=1;
-            {% endfor %}
+                {% endif %}
+            {% endfor %}{% endfor %}
             if(!mycheck)
             {
-                text.innerText = text.style.color = "{{players.0}}";
+                text.innerText = "{{ names.0 }}";
+                text.style.color = "{{players.0}}";
             }
         }
         var badtext = document.getElementById('badtext');
@@ -306,7 +310,7 @@
     {
         var text = document.getElementById('player');
         for (var i = 1; i <=4; i++){
-            if (positions[text.innerText + "pawn" + i] != 0 && positions[text.innerText + "pawn" + i]+num <= 57)return false;
+            if (positions[text.style.color + "pawn" + i] != 0 && positions[text.style.color + "pawn" + i]+num <= 57)return false;
         }
         return true;
     }
@@ -394,13 +398,12 @@
             if (clicked) 
             {
                 var position = currPos;
-                if(text.innerText == currcolor) 
+                if(text.style.color == currcolor) 
                 {
                     if (positions[currpawn] != 0 || num == 6) 
                     {
                         if (positions[currpawn] == 0) 
                         {
-                            console.log("YES");
                             var doc = document.getElementById(currpawn);
                             doc.style.border = "";
                             doc.style.backgroundColor=Color;
@@ -449,7 +452,9 @@
         var map = {"green":false,"red":false,"yellow":false,"blue":false};
         var arr = ["green","red","yellow","blue"];
         var i=0;
-        {% for j in players %}
+        {% for j in players %}{% for k in names %}
+        {% if forloop.counter == forloop.parentloop.counter %}
+        console.log("{{ k }}");
             i=i+1;
             document.getElementsByClassName("box"+i)[0].style.backgroundColor="{{ j }}";
             var ch = "andarkablock"+i;
@@ -466,11 +471,12 @@
                 mydoc[ele].style.border="20px solid {{ j }}";
                 mydoc[ele].setAttribute('onclick','randomMove("{{ j }}",'+myindex+')');
             }
-            document.getElementById("box"+i+"player").innerHTML="Player"+i; 
+            document.getElementById("box"+i+"player").innerHTML="{{ k }}"; 
             map["{{ j }}"]=true;
             mymapping["{{ j }}"]="box"+i;
             allcolor.push("{{ j }}");
-        {% endfor %}
+            {% endif %}
+        {% endfor %}{% endfor %}
         for(var jj =i+1;jj<=4;jj++)
         {
             for(var ii=0;ii<4;ii++)

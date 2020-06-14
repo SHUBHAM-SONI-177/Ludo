@@ -12,7 +12,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form id="myform" action="updateProfile" method="POST" class="shadow-lg"  enctype="multipart/form-data" style="padding: 50px;background-color: tan;">
+        <form id="myform" action="updateProfile" method="POST" class="shadow-lg"  enctype="multipart/form-data" style="padding: 50px;">
           {% csrf_token %}
           <label style="color: red;font-weight: 100;" for="profilePic">Choose a profile picture:</label><br><br>
           <input type="file" id="avatar" name="profilePic" accept="image/png,image/jpeg">
@@ -45,13 +45,16 @@
             <i id="inputgroupname2" style="display: none;cursor: pointer;" onclick="document.getElementById('nameform').submit()" class="fa fa-check-square-o fa-2x"></i>
           </form>
           <br>
-          <p style="font-size: large;">Email: <b>{{profile.email}} </b></p>
-          <button class="btn-outline-success" type="button">Select players</button>
+          <p style="font-size: large;">Email: <b>{{profile.email}}</b></p>
+          <form action="SelectUser" method="POST">
+            {% csrf_token %}
+          <button class="btn-outline-success" type="submit">Select players</button>
+          </form>
         </div>
       </div>
       <div class="row" style="border: 2px solid grey; padding: 10px;">
         <div class="col-4" style="float: left;">
-          <a href="" onclick="history.back()"><i class="fa fa-arrow-left fa-2x"></i></a>
+          <a href="/users"><i class="fa fa-arrow-left fa-2x"></i></a>
         </div>
         <div class="col-4" style="text-align: center;">
             <a title="Edit Profile" href="" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-pencil-square fa-2x"></i></a>

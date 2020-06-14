@@ -19,15 +19,18 @@ def index(request):
 
 def play(request):
     if request.method == "POST":
-        if request.POST.get('game','none')=="ludo":
-            nplayer = int(request.POST.get('nplayer','none'))
-            players=[]
-            for i in range(nplayer):
-                players.append(request.POST.get('player'+str(i+1),'none'))
-            params={'nplayer':nplayer,'players':players}
-            return render(request,'users/ludo.html',params)
-        else:
-            return render(request,'users/sudoku.html')
+        alluser = user.objects.all()
+        playerss = []
+        for obj in alluser:
+            if obj.email in request.POST:
+                playerss.append(obj)
+        players=[]
+        names=[]
+        for i in playerss:
+            players.append(request.POST.get(i.email))
+            names.append(i.name)
+        params={'names':names,'players':players}
+        return render(request,'users/ludo.html',params)
     else:
         return HttpResponse("invalid request")
 
@@ -40,12 +43,34 @@ def mylogin(request):
 def viewProfile(request):
     try:
         tuser = user.objects.get(email=request.session['loguser'])
-        alluser = user.objects.all()
-        params={'profile':tuser,'alluser':alluser}
+        params={'profile':tuser}
         return render(request,'users/viewProfile.html',params)
     except:
         messages.error(request,'Please login')
         return HttpResponseRedirect('/users/mylogin')
+
+def SelectUser(request):
+    if request.session['slogin']:
+        alluser = user.objects.all().exclude(email=request.session['loguser'])
+        return render(request,'users/alluser.html',{'alluser':alluser})
+    else:
+        messages.error(request,'Please login')
+        return HttpResponseRedirect('/users/mylogin')
+
+def choosecolor(request):
+    if request.session['slogin']:
+        alluser = user.objects.all()
+        players = []
+        for obj in alluser:
+            if obj.email in request.POST:
+                players.append(obj)
+        thisuser = user.objects.get(email=request.session['loguser'])
+        players.append(thisuser)
+        return render(request,'users/choosecolor.html',{'players':players})
+    else:
+        messages.error(request,'Please login')
+        return HttpResponseRedirect('users/mylogin.html')
+
 
 def updateProfile(request):
     if request.method=='POST':
@@ -134,7 +159,6 @@ def handlesignup(request):
             )
         email.send()
         tuser.save()
-        messages.success(request,'Please confirm your email address to complete the registration')
         return HttpResponse("Verify your Email")
     else:
         return HttpResponse("invalid")
