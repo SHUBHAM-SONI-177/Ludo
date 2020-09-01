@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = 'uav50@an*=siosd$a*ofn51h27s#@1)g^&=e+thot38db2+zpm'
-SECRET_KEY = os.environ.get('BLOG_KEY1')
+#SECRET_KEY = os.environ.get('BLOG_KEY1')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
@@ -125,7 +125,7 @@ MEDIA_URL = '/media/'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'paperless861@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ.get('mypass')
+#EMAIL_HOST_PASSWORD = 'qfikowbkmbdqcztf'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Ludo(Hit The Dice) paperless861@gmail.com'
